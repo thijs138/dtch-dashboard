@@ -133,6 +133,31 @@ button,input,select{font:inherit;color:inherit}
 /* uitloggen */
 .logout{align-self:flex-start;background:rgba(255,255,255,.12);border:0;color:var(--band-text);border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer}
 .logout:hover{background:rgba(255,255,255,.2)}
+/* order opzoeken */
+.zform{display:flex;gap:8px;flex-wrap:wrap}
+.zform input{flex:1;min-width:0;font:inherit;font-size:15px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-family:var(--mono)}
+.zform button{font:inherit;font-weight:500;background:var(--brand);color:#fff;border:0;border-radius:8px;padding:0 20px;cursor:pointer}
+:root[data-theme="dark"] .zform button{color:#08243F}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .zform button{color:#08243F}}
+.ohead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:flex-start}
+.ohead .id{font-family:var(--mono);font-size:20px;font-weight:500}
+.ohead .meta{color:var(--sub);font-size:13px;margin-top:4px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.info{background:var(--surface-2);color:var(--sub)}
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl li{position:relative;padding:0 0 22px 30px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--c2)}
+.tl li::after{content:"";position:absolute;left:11px;top:20px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl li.good::before{border-color:var(--good)} .tl li.warn::before{border-color:var(--warn)} .tl li.bad::before{border-color:var(--bad)}
+.tl .t{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tl .h{font-weight:500;margin-top:1px}
+.tl .d{color:var(--sub);font-size:13px;margin-top:2px}
+.tl .src{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:1px}
+a.trk{color:var(--brand-2);font-family:var(--mono);font-size:12.5px}
+.zlink{background:none;border:0;padding:0;color:var(--brand-2);font-family:var(--mono);font-size:12.5px;cursor:pointer;text-align:left}
 /* nav-secties en badges */
 .navsec{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--band-sub);opacity:.75;padding:14px 12px 4px}
 .navsec:first-child{padding-top:0}
@@ -145,7 +170,7 @@ button,input,select{font:inherit;color:inherit}
 .st::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
 .st.ok{color:var(--good)} .st.warn{color:var(--warn)} .st.bad{color:var(--bad)}
 .hl td{background:color-mix(in srgb,var(--bad-soft) 60%,transparent)}
-td .bad,.bad-t{color:var(--bad);font-weight:500}
+td .bad,td.bad,.bad-t{color:var(--bad);font-weight:500}
 /* kleur & maat */
 .heat td.c{text-align:center;font-variant-numeric:tabular-nums;font-size:12.5px;border-radius:4px;padding:10px 6px;border-bottom:2px solid var(--surface)}
 .heat th{text-align:center}
@@ -304,13 +329,15 @@ pre.code{background:var(--surface-2);border-radius:8px;padding:12px 14px;font-fa
       <div class="navsec">Operatie</div>
       <a href="#signalen" data-v="signalen"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>Signalen<span class="nbadge" id="sigBadge" hidden></span></a>
       <a href="#verzending" data-v="verzending"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Verzending<span class="nbadge" id="shipBadge" hidden></span></a>
+      <a href="#zoeken" data-v="zoeken"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>Order opzoeken</a>
       <a href="#annuleringen" data-v="annuleringen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>Annuleringen</a>
+      <a href="#retouren" data-v="retouren"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>Retouren</a>
       <a href="#orders" data-v="orders"><svg viewBox="0 0 24 24"><path d="M6 3h12l1 4H5l1-4z"/><path d="M5 7h14v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7z"/><path d="M9 11h6"/></svg>Orders</a>
       <div class="navsec">Instellingen</div>
       <a href="#koppeling" data-v="koppeling"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Koppeling</a>
     </nav>
     <div class="foot">
-      <div class="sync"><span class="dot"></span>Channable · niet gekoppeld</div>
+      <div class="sync"><span class="dot"></span>Magento · niet gekoppeld</div>
       <div>Ontwerp met voorbeelddata. Cijfers zijn niet echt.</div>
       <button class="logout" id="logout" hidden>Uitloggen</button>
     </div>
@@ -338,8 +365,10 @@ pre.code{background:var(--surface-2);border-radius:8px;padding:12px 14px;font-fa
 /* ================================================================
    DATA-LAAG
    In de echte versie vervangt een Vercel-functie (/api/orders) deze
-   generator: die haalt orders op uit Channable en zet ze om met
-   fromChannable() hieronder naar hetzelfde formaat.
+   generator: die haalt orders op uit Magento (REST API, alleen lezen)
+   en zet ze om met fromMagento() hieronder naar hetzelfde formaat.
+   Verzendingen, naleveringen en retouren komen uit de Facido-bestanden
+   (Sendungsausgang/DESADV en ZGRU) die dagelijks per mail binnenkomen.
    ================================================================ */
 const TODAY='2026-10-28', NOW_FRAC=0.36;
 /* Begroting 2026 per marktplaats per maand (bron: Begroting marketplaces 2026.xlsx, omzet zonder aftrek retouren) */
@@ -380,17 +409,21 @@ const GOALS_2026={}; // alle jaren, sleutel 'JJJJ-MM'
 for(const y in BUDGETS)for(let m=0;m<12;m++)GOALS_2026[y+'-'+String(m+1).padStart(2,'0')]=Object.values(BUDGETS[y]).reduce((t,a)=>t+(+a[m]||0),0);
 const goalYear=y=>Array.from({length:12},(_,m)=>GOALS_2026[y+'-'+String(m+1).padStart(2,'0')]||0);
 
-/* Zo ziet de omzetting van een Channable-order eruit (velden uit de Channable Orders API). */
-function fromChannable(o){
-  const d=o.data||{};
+/* Omzetting van een Magento 2-order (GET /rest/V1/orders). Hoe de marktplaats in Magento staat, bepalen we nog. */
+function fromMagento(o){
+  const b=o.billing_address||{};
   return {
-    id:o.platform_id, ts:o.created, date:(o.created||'').slice(0,10),
-    mp:o.channel_name, country:(d.billing&&d.billing.country_code)||(d.shipping&&d.shipping.country_code),
-    status:o.status_shipped==='shipped'?'shipped':(o.status_paid==='cancelled'||o.status_shipped==='cancelled'?'cancelled':'new'),
-    lines:(d.products||[]).map(p=>({sku:p.id||p.ean,ean:p.ean,title:p.title,qty:p.quantity,price:p.price})),
-    total:d.price&&d.price.total
+    id:o.ext_order_id||o.increment_id, magentoId:o.increment_id, ts:o.created_at, date:(o.created_at||'').slice(0,10),
+    mp:null /* nog te bepalen: store view, betaalmethode of extra veld */, country:b.country_id,
+    status:o.state==='canceled'?'cancelled':(o.state==='complete'||o.state==='closed'?'shipped':'new'),
+    lines:(o.items||[]).filter(i=>!i.parent_item_id).map(i=>({sku:i.sku,title:i.name,qty:i.qty_ordered,price:i.price_incl_tax})),
+    total:o.grand_total
   };
 }
+/* Facido Sendungsausgang (DESADV): ; gescheiden, Windows-1252, datums dd.mm.jjjj. "Nachl." voor het ordernummer = nalevering.
+   Gebruikt: PO number WE, PO number (Nachl.), Forwarder, HU ID 2 (tracking), Actual GI date, EAN, Customer-Article-Number, Quantity.
+   Facido ZGRU (retouren): Document_Number, Order_Number, Order_Date, Return_Date, Customer_Article, EAN, Description, Quantity.
+   Naam, adres en telefoonnummer worden niet overgenomen. */
 
 const MP=[
   {n:'Amazon DE',k:'amz',cc:[['DE',.9],['AT',.1]]},
@@ -464,6 +497,23 @@ function shipMoment(orderT,r,slow){
   const wd=weekday(t); if(wd===6)t+=48; else if(wd===0)t+=24;
   return t;
 }
+const FAMRET={'Plisséhordeur':2.2,'Voorzethor':1.5,'Rolhor':1.4,'Elektrisch Rolgordijn Easy Verduisterend CMD02-P':1.8,'Elektrisch Rolgordijn Easy Verduisterend CMD03':1.8,'Houten Jaloezie 50 mm Essence':1.4,'Bamboe Houten Jaloezie Easy 50 mm':1.3,'Universele Klemsteunen Draai-/Kiepraam':.4,'Rolgordijn Verduisterend Mini Full Color':1.3};
+const B36U='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const trk=(c,q)=>{if(c==='GLS'){let t='ZEZW';for(let i=0;i<4;i++)t+=B36U[Math.floor(q()*36)];return t}let t='1ZY0140E68';for(let i=0;i<8;i++)t+=Math.floor(q()*10);return t};
+function facido(o,seed){
+  const q=rng(seed);
+  if(!o.shipT)return;
+  o.carrier=q()<.55?'GLS':'UPS';o.track=trk(o.carrier,q);
+  const fams=o.lines.map(l=>P[l.p].fam);
+  const rp=.012*(fams.includes('Plisséhordeur')?3:1)*(fams.some(f=>f.startsWith('Elektrisch'))?2:1);
+  if(q()<rp){const t=o.shipT+(2+q()*8)*24;if(t<=NOWT){const c=q()<.7?'GLS':'UPS';o.reship={t,carrier:c,track:trk(c,q),li:Math.floor(q()*o.lines.length)}}}
+  const li=Math.floor(q()*o.lines.length), fam=P[o.lines[li].p].fam;
+  if(q()<.05*(FAMRET[fam]||1)){
+    const t=o.shipT+(5+q()*20)*24;
+    if(t<=NOWT){let d='00609';for(let x=0;x<5;x++)d+=Math.floor(q()*10);o.ret={t,doc:d,li,q:o.lines[li].q};
+      const rt=t+(1+q()*4)*24;if(rt<=NOWT&&q()<.93)o.refund={t:rt,amt:Math.round(o.lines[li].q*o.lines[li].price*100)/100}}
+  }else if(q()<.008){const rt=o.shipT+(3+q()*15)*24;if(rt<=NOWT)o.refund={t:rt,amt:Math.round(o.total*(.15+q()*.3)*100)/100,goodwill:true}}
+}
 const sku=(p,c,s)=>'N'+String(100000+p*240+c*6+s).padStart(6,'0');
 const titleOf=l=>`DTCH® ${P[l.p].fam} – ${COLORS[l.c]} – ${SIZES[l.s][0]} x ${SIZES[l.s][1]} cm`;
 const B36='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -514,6 +564,7 @@ function genDay(i){
     const id=oid(mp.k,r,ds);
     if(mp.n===SILENT.mp&&orderT>SILENT.from)continue;
     out.push({id,ts,date:ds,mp:mpI,cc,status:st,lines,total:Math.round(total*100)/100,qty,orderT,shipT:st==='shipped'?shipT:null,cancT:st==='cancelled'?cancT:null});
+    facido(out[out.length-1],i*100003+k*7+11);
   }
   out.sort((a,b)=>a.ts<b.ts?1:-1);
   dayCache.set(i,out);
@@ -625,7 +676,7 @@ const PRESETS=[
   ['jaar','Dit jaar',()=>[TODAY.slice(0,4)+'-01-01',TODAY]],
   ['vjaar','Vorig jaar',()=>{const y=+TODAY.slice(0,4)-1;return[y+'-01-01',y+'-12-31']}]
 ];
-const S={from:'',to:'',preset:'maand',view:'overzicht',catMp:'',catSel:null,trMetric:'rev',trCats:new Set(),oQ:'',oMp:'',oSt:'',oPage:1,oOpen:null,bgM:'',allMp:false,allTop:false,vzThr:'24',vzAll:false,vzMp:'',vaCat:'',vaFam:'',vaMetric:'q'};
+const S={from:'',to:'',preset:'maand',view:'overzicht',catMp:'',catSel:null,trMetric:'rev',trCats:new Set(),oQ:'',oMp:'',oSt:'',oPage:1,oOpen:null,bgM:'',allMp:false,allTop:false,vzThr:'24',vzAll:false,zq:'',vzMp:'',vaCat:'',vaFam:'',vaMetric:'q'};
 function setPreset(k){const p=PRESETS.find(x=>x[0]===k);[S.from,S.to]=p[2]();S.preset=k;syncDates();render()}
 function syncDates(){
   $('df').value=S.from;$('dt').value=S.to;$('df').max=$('dt').max=TODAY;$('df').min=$('dt').min='2025-01-01';
@@ -805,7 +856,7 @@ function vCategorieen(){
       <div class="tw"><table><thead><tr><th>Productfamilie</th><th class="r">Stuks</th><th class="r hide-s">Gem. prijs</th><th class="r">Omzet</th><th class="r hide-s">Aandeel</th></tr></thead><tbody>
       ${fams.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="r">${nf.format(v.q)}</td><td class="r hide-s">${eur2.format(v.rev/v.q)}</td><td class="r">${eur0.format(v.rev)}</td><td class="r hide-s">${pf.format(v.rev/ctot)}</td></tr>`).join('')}
       </tbody></table></div>
-      <div class="note" style="margin-top:14px">De indeling in categorie en familie komt uit de productfeed in Channable (veld <span class="mono">product_type</span> of een eigen veld), gekoppeld op SKU/EAN.</div>
+      <div class="note" style="margin-top:14px">De indeling in categorie en familie komt uit de productgegevens in Magento (categorie of een eigen kenmerk), gekoppeld op SKU.</div>
     </section>
   </div>`;
 }
@@ -866,7 +917,7 @@ function vOrders(){
       <select id="oSt" aria-label="Status"><option value="">Alle statussen</option>${Object.entries(stl).map(([k,v])=>`<option value="${k}" ${S.oSt===k?'selected':''}>${v}</option>`).join('')}</select>
     </div>
     <div class="tw"><table><thead><tr><th>Datum</th><th>Ordernummer</th><th>Marktplaats</th><th class="hide-s">Land</th><th class="r hide-s">Art.</th><th class="r">Totaal</th><th>Status</th></tr></thead><tbody>
-    ${rows.map(o=>`<tr class="order" data-o="${o.id}" tabindex="0"><td class="num" style="white-space:nowrap">${dfmt(o.date)} <span style="color:var(--muted)">${o.ts.slice(11)}</span></td><td class="mono">${o.id}</td><td><span class="mpb"><i style="background:${MPCOL(o.mp)}"></i>${MP[o.mp].n}</span></td><td class="hide-s">${CC[o.cc]}</td><td class="r hide-s">${o.qty}</td><td class="r">${eur2.format(o.total)}</td><td><span class="pill ${o.status}">${stl[o.status]}</span></td></tr>${S.oOpen===o.id?`<tr class="lines"><td colspan="7"><table>${o.lines.map(l=>`<tr><td class="mono">${sku(l.p,l.c,l.s)}</td><td>${esc(titleOf(l))}</td><td class="r">${l.q} × ${eur2.format(l.price)}</td></tr>`).join('')}</table></td></tr>`:''}`).join('')||'<tr><td colspan="7" class="empty">Geen orders gevonden</td></tr>'}
+    ${rows.map(o=>`<tr class="order" data-o="${o.id}" tabindex="0"><td class="num" style="white-space:nowrap">${dfmt(o.date)} <span style="color:var(--muted)">${o.ts.slice(11)}</span></td><td class="mono">${o.id}</td><td><span class="mpb"><i style="background:${MPCOL(o.mp)}"></i>${MP[o.mp].n}</span></td><td class="hide-s">${CC[o.cc]}</td><td class="r hide-s">${o.qty}</td><td class="r">${eur2.format(o.total)}</td><td><span class="pill ${o.status}">${stl[o.status]}</span></td></tr>${S.oOpen===o.id?`<tr class="lines"><td colspan="7"><table>${o.lines.map(l=>`<tr><td class="mono">${sku(l.p,l.c,l.s)}</td><td>${esc(titleOf(l))}</td><td class="r">${l.q} × ${eur2.format(l.price)}</td></tr>`).join('')}</table><div style="padding:6px 10px 0"><button class="zlink" data-zoek="${esc(o.id)}">Volledige geschiedenis bekijken →</button></div></td></tr>`:''}`).join('')||'<tr><td colspan="7" class="empty">Geen orders gevonden</td></tr>'}
     </tbody></table></div>
     <div class="pager"><span>Pagina ${S.oPage} van ${nf.format(pages)}</span><div style="display:flex;gap:6px"><button id="oPrev" ${S.oPage<=1?'disabled':''}>Vorige</button><button id="oNext" ${S.oPage>=pages?'disabled':''}>Volgende</button></div></div>
   </section>`;
@@ -1050,7 +1101,7 @@ function vVarianten(){
     <div class="tw"><table class="heat"><thead><tr><th>Kleur</th>${SIZES.map((_,j)=>`<th>${sz(j)}</th>`).join('')}<th class="r">Totaal</th></tr></thead><tbody>
     ${order.map(i=>`<tr><td style="white-space:nowrap"><span class="swatch" style="background:${SWATCH[COLORS[i]]}"></span>${COLORS[i]}</td>${M[i].map(v=>{const p=v/max;return `<td class="c" style="background:color-mix(in srgb,var(--c2) ${Math.round(p*85)}%,var(--surface-2));color:${p>.55?'#fff':'var(--text)'}">${fmt(v)}</td>`}).join('')}<td class="r"><b>${fmt(rowT[i])}</b></td></tr>`).join('')}
     </tbody></table></div>
-    <div class="note" style="margin-top:16px">Kleur en maat komen straks uit de productfeed in Channable (velden zoals kleur, breedte en hoogte). Bij maatwerk groeperen we de breedtes in vaste stappen.</div>
+    <div class="note" style="margin-top:16px">Kleur en maat komen straks uit de productkenmerken in Magento (kleur, breedte en hoogte). Bij maatwerk groeperen we de breedtes in vaste stappen.</div>
   </section>`;
 }
 
@@ -1120,44 +1171,140 @@ function drawBlackfriday(){
     options:{...o,plugins:{...o.plugins,tooltip:{...o.plugins.tooltip,callbacks:{title:i=>i[0].label+':00 – '+String(+i[0].label+1).padStart(2,'0')+':00',label:c=>` ${c.raw} orders`}}},scales:{...o.scales,x:{...o.scales.x,ticks:{...o.scales.x.ticks,autoSkip:true,maxTicksLimit:8}},y:{...o.scales.y,beginAtZero:true,ticks:{...o.scales.y.ticks,precision:0}}}}});
 }
 
+let allIdx=null;
+function allOrders(){if(allIdx)return allIdx;const L=[];for(let i=idx('2025-01-01');i<=TI;i++)for(const o of genDay(i))L.push(o);return allIdx=L}
+const normId=x=>String(x||'').toLowerCase().replace(/^nachl\s*\.?\s*/,'').replace(/[\s]/g,'');
+const trkUrl=(c,t)=>c==='UPS'?'https://www.ups.com/track?tracknum='+encodeURIComponent(t):'https://gls-group.com/NL/nl/pakket-volgen?match='+encodeURIComponent(t);
+const trkA=(c,t)=>`<a class="trk" href="${trkUrl(c,t)}" target="_blank" rel="noopener">${esc(t)}</a>`;
+function flags(o){const f=[];if(o.status==='cancelled')f.push('<span class="pill cancelled">Geannuleerd</span>');else if(o.status==='new')f.push('<span class="pill new">Nog niet verzonden</span>');else f.push('<span class="pill shipped">Verzonden</span>');
+  if(o.reship)f.push('<span class="pill warn">Nalevering</span>');if(o.ret)f.push('<span class="pill warn">Retour</span>');if(o.refund)f.push(`<span class="pill info">Terugbetaald ${eur2.format(o.refund.amt)}</span>`);return f.join('')}
+function vZoeken(){
+  const q=normId(S.zq);let hits=[];
+  if(q.length>=4){const L=allOrders();for(const o of L){const n=normId(o.id);if(n===q){hits=[o];break}if(q.length>=6&&n.includes(q)){hits.push(o);if(hits.length>=20)break}}}
+  let body='';
+  if(!q){
+    const rec=[];for(let i=TI;i>=TI-60&&rec.length<12;i--)for(const o of genDay(i)){if(o.reship||o.ret||o.refund)rec.push(o);if(rec.length>=12)break}
+    body=`<section class="card"><div class="ch"><h2>Recent met nalevering, retour of terugbetaling</h2><small>klik op een ordernummer</small></div>
+      <div class="tw"><table><thead><tr><th>Ordernummer</th><th>Marktplaats</th><th class="hide-s">Besteld</th><th>Wat er speelde</th></tr></thead><tbody>
+      ${rec.map(o=>`<tr><td><button class="zlink" data-zoek="${esc(o.id)}">${esc(o.id)}</button></td><td>${MP[o.mp].n}</td><td class="hide-s num">${dfmt(o.date)}</td><td><div class="pills">${flags(o)}</div></td></tr>`).join('')}
+      </tbody></table></div></section>`;
+  }else if(!hits.length){
+    body=`<section class="card"><div class="empty">Geen order gevonden voor <b class="mono">${esc(S.zq)}</b>. Controleer het nummer, of zoek op een deel ervan (minstens 6 tekens).</div></section>`;
+  }else if(hits.length>1){
+    body=`<section class="card"><div class="ch"><h2>${hits.length}${hits.length>=20?'+':''} orders gevonden</h2></div><div class="tw"><table><thead><tr><th>Ordernummer</th><th>Marktplaats</th><th class="hide-s">Besteld</th><th></th></tr></thead><tbody>
+      ${hits.map(o=>`<tr><td><button class="zlink" data-zoek="${esc(o.id)}">${esc(o.id)}</button></td><td>${MP[o.mp].n}</td><td class="hide-s num">${dfmt(o.date)}</td><td><div class="pills">${flags(o)}</div></td></tr>`).join('')}</tbody></table></div></section>`;
+  }else{
+    const o=hits[0], ev=[];
+    ev.push({t:o.orderT,c:'',h:'Besteld',d:`${o.qty} artikel${o.qty>1?'en':''} · ${eur2.format(o.total)} · ${CC[o.cc]}`,src:'Magento'});
+    if(o.cancT)ev.push({t:o.cancT,c:'bad',h:'Geannuleerd',d:'',src:'Magento'});
+    if(o.shipT)ev.push({t:o.shipT,c:'good',h:'Verzonden door Facido',d:`${o.carrier} · ${trkA(o.carrier,o.track)} · verzonden ${Math.round(o.shipT-o.orderT)} uur na bestelling`,src:'Sendungsausgang'});
+    else if(o.status==='new')ev.push({t:NOWT,c:'warn',h:'Wacht op verzending',d:`al ${ago(NOWT-o.orderT)}`,src:''});
+    if(o.reship){const l=o.lines[o.reship.li];ev.push({t:o.reship.t,c:'warn',h:'Nalevering verzonden',d:`${esc(titleOf(l))} · ${o.reship.carrier} · ${trkA(o.reship.carrier,o.reship.track)}`,src:'Sendungsausgang (Nachl.)'})}
+    if(o.ret){const l=o.lines[o.ret.li];ev.push({t:o.ret.t,c:'warn',h:'Retour ontvangen bij Facido',d:`${o.ret.q}× ${esc(titleOf(l))} · retourdocument <span class="mono">${o.ret.doc}</span>`,src:'ZGRU'})}
+    if(o.refund)ev.push({t:o.refund.t,c:'',h:o.refund.goodwill?'Gedeeltelijk terugbetaald':'Terugbetaald',d:`${eur2.format(o.refund.amt)}${o.refund.goodwill?' · zonder retour, bijvoorbeeld bij schade of coulance':''}`,src:'Magento creditnota'});
+    ev.sort((a,b)=>a.t-b.t);
+    body=`<section class="card"><div class="ohead"><div><div class="id">${esc(o.id)}</div><div class="meta">${MP[o.mp].n} · ${CC[o.cc]} · besteld ${fmtT(o.orderT)} · ${eur2.format(o.total)}</div></div><div class="pills">${flags(o)}</div></div></section>
+    <div class="grid g-2-1">
+      <section class="card"><div class="ch"><h2>Geschiedenis</h2></div><ul class="tl">${ev.map(e=>`<li class="${e.c}"><div class="t">${e.t>=NOWT?'nu':fmtT(e.t)}</div><div class="h">${e.h}${e.src?`<span class="src">${e.src}</span>`:''}</div>${e.d?`<div class="d">${e.d}</div>`:''}</li>`).join('')}</ul></section>
+      <section class="card"><div class="ch"><h2>Producten</h2></div><div class="tw"><table><tbody>
+        ${o.lines.map((l,i)=>`<tr><td>${esc(titleOf(l))}<span class="sub"><span class="mono">${sku(l.p,l.c,l.s)}</span> · ${l.q} × ${eur2.format(l.price)}</span>${o.ret&&o.ret.li===i?'<span class="sub" style="color:var(--warn)">Geretourneerd</span>':''}${o.reship&&o.reship.li===i?'<span class="sub" style="color:var(--warn)">Nageleverd</span>':''}</td></tr>`).join('')}
+      </tbody></table></div></section>
+    </div>`;
+  }
+  return `
+  <div class="head"><div><h1>Order opzoeken</h1><p>Alles over één order: verzending, naleveringen, retouren en terugbetalingen</p></div></div>
+  <section class="card"><form class="zform" id="zf"><input id="zq" type="search" placeholder="Ordernummer, bijv. 302-1614291-7805922" value="${esc(S.zq)}" aria-label="Ordernummer" autocomplete="off"><button type="submit">Zoeken</button></form></section>
+  ${body}`;
+}
+
+function vRetouren(){
+  const a=idx(S.from), b=Math.min(idx(S.to),TI), A=a*24, B=(b+1)*24;
+  const R=agg(S.from,S.to), [pa,pb]=prevRange();
+  const stats=(A0,B0)=>{const x={ret:0,retO:0,reship:0,refund:0,refundN:0,fam:{},famR:{},mp:{},sku:{}};
+    for(let i=Math.floor(A0/24)-45;i<=Math.min(TI,Math.floor(B0/24));i++)for(const o of genDay(i)){
+      if(o.ret&&o.ret.t>=A0&&o.ret.t<B0){const l=o.lines[o.ret.li],f=P[l.p].fam,k=sku(l.p,l.c,l.s);x.ret+=o.ret.q;x.retO++;x.fam[f]=(x.fam[f]||0)+o.ret.q;x.mp[o.mp]=(x.mp[o.mp]||0)+o.ret.q;(x.sku[k]||(x.sku[k]={l,n:0})).n+=o.ret.q}
+      if(o.reship&&o.reship.t>=A0&&o.reship.t<B0){x.reship++;const f=P[o.lines[o.reship.li].p].fam;x.famR[f]=(x.famR[f]||0)+1}
+      if(o.refund&&o.refund.t>=A0&&o.refund.t<B0){x.refund+=o.refund.amt;x.refundN++}
+    }return x};
+  const X=stats(A,B), Y=stats(idx(pa)*24,(idx(pb)+1)*24), Q=agg(pa,pb);
+  const rate=R.items?X.ret/R.items:0, prate=Q.items?Y.ret/Q.items:0;
+  const fams=Object.keys(R.fam).map(f=>({f,sold:R.fam[f].q,ret:X.fam[f]||0,rs:X.famR[f]||0})).map(x=>({...x,r:x.sold?x.ret/x.sold:0})).sort((p,q)=>q.ret-p.ret).slice(0,10);
+  const mps=Object.keys(R.mp).map(k=>{let sold=0;return {n:MP[k].n,k:+k,ret:X.mp[k]||0}}).sort((p,q)=>q.ret-p.ret);
+  const mpSold={};for(let i=a;i<=b;i++)for(const o of genDay(i))if(o.status!=='cancelled')mpSold[o.mp]=(mpSold[o.mp]||0)+o.qty;
+  const skus=Object.entries(X.sku).sort((p,q)=>q[1].n-p[1].n).slice(0,8);
+  const hi=(r,n)=>r>rate*2&&n>=5;
+  return `
+  <div class="head"><div><h1>Retouren</h1><p>${rangeLabel(S.from,S.to)} · retouren uit de ZGRU-lijsten, naleveringen uit de Sendungsausgangen, terugbetalingen uit Magento</p></div></div>
+  <div class="grid g4">
+    ${kpi('Geretourneerd',nf.format(X.ret)+' stuks',delta(X.ret,Y.ret,true),`${nf.format(X.retO)} orders`)}
+    ${kpi('Retourpercentage',pf.format(rate),delta(rate,prate,true),'retourstuks t.o.v. verkochte stuks')}
+    ${kpi('Terugbetaald',eur0.format(X.refund),delta(X.refund,Y.refund,true),`${nf.format(X.refundN)} terugbetalingen`)}
+    ${kpi('Naleveringen',nf.format(X.reship),delta(X.reship,Y.reship,true),'orders met "Nachl." in de Sendungsausgang')}
+  </div>
+  <div class="grid g2">
+    <section class="card"><div class="ch"><h2>Per productlijn</h2><small>rood = meer dan 2× het gemiddelde</small></div>
+      <div class="tw"><table><thead><tr><th>Productlijn</th><th class="r">Verkocht</th><th class="r">Retour</th><th class="r">%</th><th class="r hide-s">Nalev.</th></tr></thead><tbody>
+      ${fams.map(x=>`<tr><td>${esc(x.f)}</td><td class="r">${nf.format(x.sold)}</td><td class="r">${nf.format(x.ret)}</td><td class="r ${hi(x.r,x.ret)?'bad':''}">${pf.format(x.r)}</td><td class="r hide-s">${x.rs||'–'}</td></tr>`).join('')}
+      </tbody></table></div>
+    </section>
+    <section class="card"><div class="ch"><h2>Per marktplaats</h2></div>
+      <div class="tw"><table><thead><tr><th>Marktplaats</th><th class="r">Verkocht</th><th class="r">Retour</th><th class="r">%</th></tr></thead><tbody>
+      ${mps.map(x=>{const so=mpSold[x.k]||0,r=so?x.ret/so:0;return `<tr><td>${x.n}</td><td class="r">${nf.format(so)}</td><td class="r">${nf.format(x.ret)}</td><td class="r ${hi(r,x.ret)?'bad':''}">${pf.format(r)}</td></tr>`}).join('')}
+      </tbody></table></div>
+    </section>
+  </div>
+  <section class="card"><div class="ch"><h2>Meest geretourneerde artikelen</h2><small>stuks in de periode</small></div>
+    <div class="tw"><table><thead><tr><th></th><th>Artikel</th><th class="r">Retour</th></tr></thead><tbody>
+    ${skus.map(([k,v],i)=>`<tr><td class="rank">${i+1}</td><td>${esc(titleOf(v.l))}<span class="sub mono">${k}</span></td><td class="r">${v.n}</td></tr>`).join('')||'<tr><td colspan="3" class="empty">Geen retouren in deze periode</td></tr>'}
+    </tbody></table></div>
+    <div class="note" style="margin-top:14px">In de ZGRU-lijst staat geen retourreden. Het percentage is een benadering: retouren in de periode gedeeld door verkochte stuks in dezelfde periode. Een retour hoort vaak bij een order van een paar weken eerder.</div>
+  </section>`;
+}
+
 function vKoppeling(){
   return `
-  <div class="head"><div><h1>Koppeling met Channable</h1><p>Wat er nodig is om dit ontwerp met echte orders te vullen</p></div></div>
+  <div class="head"><div><h1>Koppelingen</h1><p>Waar de gegevens vandaan komen en wat er nodig is om het dashboard met echte data te vullen</p></div></div>
   <div class="grid g2">
-    <section class="card"><div class="ch"><h2>Status</h2><span class="pill" style="background:var(--warn-soft);color:var(--warn)">Niet gekoppeld</span></div>
+    <section class="card"><div class="ch"><h2>Magento</h2><span class="pill warn">Niet gekoppeld</span></div>
       <div class="steps">
-        <div class="step"><div><b>API-token aanmaken in Channable</b><p>Ga in Channable naar je bedrijfsinstellingen, onderdeel API-tokens, en maak een nieuw token met leesrechten voor orders. Kopieer het token direct, je ziet het maar één keer.</p></div></div>
-        <div class="step"><div><b>Company-ID en project-ID opzoeken</b><p>Beide staan in de adresbalk als je het project in Channable opent: <span class="mono">app.channable.com/companies/<b>12345</b>/projects/<b>67890</b>/…</span></p></div></div>
-        <div class="step"><div><b>Variabelen in Vercel zetten</b><p>Zet ze als Environment Variables in het nieuwe Vercel-project, niet in de code of in een chat.</p>
-<pre class="code">CHANNABLE_API_TOKEN = &lt;jouw token&gt;
-CHANNABLE_COMPANY_ID = 12345
-CHANNABLE_PROJECT_IDS = 67890</pre></div></div>
-        <div class="step"><div><b>Synchronisatie</b><p>Een Vercel-cronjob haalt elk kwartier nieuwe en gewijzigde orders op en slaat ze op, zodat het dashboard snel blijft en ook oudere periodes kan tonen.</p></div></div>
+        <div class="step"><div><b>Integratie aanmaken met alleen leesrechten</b><p>In Magento: System → Extensions → Integrations → Add New Integration. Geef alleen toegang tot Sales (orders, verzendingen, creditnota's) en Catalog (producten).</p></div></div>
+        <div class="step"><div><b>Token als bearer-token toestaan</b><p>Stores → Configuration → Services → OAuth → Consumer Settings → "Allow OAuth Access Tokens to be used as standalone Bearer tokens".</p></div></div>
+        <div class="step"><div><b>Token op de eigen server zetten</b><p>In het configuratiebestand van het dashboard, nooit in de code, op GitHub of in een chat.</p></div></div>
+        <div class="step"><div><b>Synchronisatie</b><p>Elk kwartier nieuwe en gewijzigde orders, verzendingen en creditnota's ophalen.</p></div></div>
       </div>
-    </section>
-    <section class="card"><div class="ch"><h2>Welke Channable-gegevens waar terechtkomen</h2></div>
-      <div class="tw"><table><thead><tr><th>Dashboard</th><th>Channable-orderveld</th></tr></thead><tbody>
-        <tr><td>Ordernummer</td><td class="mono">platform_id</td></tr>
-        <tr><td>Marktplaats</td><td class="mono">channel_name</td></tr>
-        <tr><td>Datum en tijd</td><td class="mono">created</td></tr>
-        <tr><td>Land</td><td class="mono">data.billing.country_code</td></tr>
-        <tr><td>Status</td><td class="mono">status_paid, status_shipped</td></tr>
-        <tr><td>Totaalbedrag</td><td class="mono">data.price.total</td></tr>
-        <tr><td>Producten</td><td class="mono">data.products[] (id, ean, title, quantity, price)</td></tr>
-        <tr><td>Categorie, familie</td><td>productfeed in Channable, gekoppeld op SKU/EAN</td></tr>
-        <tr><td>Verzendmoment</td><td>moment dat <span class="mono">status_shipped</span> wijzigt (vastgelegd bij synchronisatie)</td></tr>
-        <tr><td>Kleur, maat</td><td>productfeed in Channable (kleur, breedte, hoogte)</td></tr>
-        <tr><td>Begroting</td><td>Begroting marketplaces 2026.xlsx (per marktplaats per maand)</td></tr>
+      <div class="tw" style="margin-top:16px"><table><thead><tr><th>Dashboard</th><th>Magento</th></tr></thead><tbody>
+        <tr><td>Ordernummer</td><td class="mono">increment_id, ext_order_id</td></tr>
+        <tr><td>Marktplaats</td><td>nog te bepalen (store view, betaalmethode of extra veld)</td></tr>
+        <tr><td>Datum, land, bedrag</td><td class="mono">created_at, billing_address.country_id, grand_total</td></tr>
+        <tr><td>Producten</td><td class="mono">items[] (sku, name, qty_ordered, price_incl_tax)</td></tr>
+        <tr><td>Terugbetalingen</td><td class="mono">creditmemos</td></tr>
+        <tr><td>Categorie, kleur, maat</td><td>productkenmerken</td></tr>
       </tbody></table></div>
-      <div class="note" style="margin-top:14px">Ads, TACOS en marges zitten niet in de Channable-orders. Die voegen we in een volgende stap toe vanuit de advertentiedata en de inkoopprijzen.</div>
     </section>
-  </div>`;
+    <section class="card"><div class="ch"><h2>Facido-bestanden (mail)</h2><span class="pill warn">Niet gekoppeld</span></div>
+      <div class="steps">
+        <div class="step"><div><b>Eigen mailbox voor de bestanden</b><p>Bijvoorbeeld rapporten@raamdecoratie.com, met een doorstuurregel voor de Sendungsausgang- en ZGRU-mails. Freshdesk blijft zoals het is.</p></div></div>
+        <div class="step"><div><b>Inlezen</b><p>Een script op de eigen server haalt elk kwartier de CSV-bijlagen op, leest ze in en markeert de mail als verwerkt.</p></div></div>
+      </div>
+      <div class="tw" style="margin-top:16px"><table><thead><tr><th>Bestand</th><th>Wat we gebruiken</th></tr></thead><tbody>
+        <tr><td>Sendungsausgang (DESADV)</td><td>ordernummer, verzenddatum, vervoerder, tracking, EAN, SKU, aantal. "Nachl." voor het ordernummer = nalevering</td></tr>
+        <tr><td>ZGRU</td><td>retourdocument, ordernummer, besteldatum, retourdatum, SKU, EAN, omschrijving, aantal</td></tr>
+      </tbody></table></div>
+      <div class="note" style="margin-top:14px">Namen, adressen en telefoonnummers uit deze bestanden worden niet overgenomen in het dashboard.</div>
+    </section>
+  </div>
+  <section class="card"><div class="ch"><h2>Overige bronnen</h2></div>
+    <div class="tw"><table><tbody>
+      <tr><td>Begroting</td><td>Excel-sjabloon "Begroting dashboard.xlsx", één tabblad per jaar</td></tr>
+      <tr><td>Ads, TACOS, marges</td><td>volgt later: advertentiedata en inkoopprijzen</td></tr>
+    </tbody></table></div>
+  </section>`;
 }
 
 /* ================================================================
    RENDER + EVENTS
    ================================================================ */
-const VIEWS={overzicht:[vOverzicht,drawOverzicht],categorieen:[vCategorieen],trends:[vTrends,drawTrends],begroting:[vBegroting,drawBegroting],varianten:[vVarianten],blackfriday:[vBlackfriday,drawBlackfriday],signalen:[vSignalen],verzending:[vVerzending],annuleringen:[vAnnuleringen,drawAnnuleringen],orders:[vOrders],koppeling:[vKoppeling]};
+const VIEWS={overzicht:[vOverzicht,drawOverzicht],categorieen:[vCategorieen],trends:[vTrends,drawTrends],begroting:[vBegroting,drawBegroting],varianten:[vVarianten],zoeken:[vZoeken],retouren:[vRetouren],blackfriday:[vBlackfriday,drawBlackfriday],signalen:[vSignalen],verzending:[vVerzending],annuleringen:[vAnnuleringen,drawAnnuleringen],orders:[vOrders],koppeling:[vKoppeling]};
 function render(){
   const v=VIEWS[S.view]||VIEWS.overzicht;
   Object.values(charts).forEach(c=>c.destroy());for(const k in charts)delete charts[k];
@@ -1169,7 +1316,8 @@ function render(){
 function route(){const h=(location.hash||'').slice(1);S.view=VIEWS[h]?h:'overzicht';render()}
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-p],[data-cat],[data-m],[data-tc],[data-more],[data-vz],[data-va],tr.order,#oPrev,#oNext');if(!t)return;
+  const t=e.target.closest('[data-p],[data-cat],[data-m],[data-tc],[data-more],[data-vz],[data-va],[data-zoek],tr.order,#oPrev,#oNext');if(!t)return;
+  if(t.dataset.zoek!=null){e.stopPropagation();S.zq=t.dataset.zoek;if(S.view!=='zoeken')location.hash='zoeken';else render();window.scrollTo(0,0);return}
   if(t.dataset.vz){S.vzThr=t.dataset.vz;render();return}
   if(t.dataset.va){S.vaMetric=t.dataset.va;render();return}
   if(t.dataset.more){const k=t.dataset.more;if(k==='mp')S.allMp=!S.allMp;else if(k==='vz')S.vzAll=!S.vzAll;else S.allTop=!S.allTop;render();return}
@@ -1194,6 +1342,7 @@ document.addEventListener('change',e=>{
 });
 let qT;document.addEventListener('input',e=>{if(e.target.id==='oQ'){clearTimeout(qT);qT=setTimeout(()=>{S.oQ=e.target.value;S.oPage=1;render();const el=$('oQ');el.focus();el.setSelectionRange(el.value.length,el.value.length)},250)}});
 window.addEventListener('hashchange',route);
+document.addEventListener('submit',e=>{if(e.target.id==='zf'){e.preventDefault();S.zq=$('zq').value.trim();render();const z=$('zq');if(z)z.focus()}});
 const redraw=()=>{const v=VIEWS[S.view];if(v&&v[1]&&window.Chart)v[1]()};
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw)}catch(e){}
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
